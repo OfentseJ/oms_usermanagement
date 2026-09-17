@@ -9,25 +9,22 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user_credentials")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class User {
+public class UserCredential {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long customerId;
+    private Long credentialId;
 
-    private String firstName;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customerId")
+    private User user;
 
-    private String surname;
-
-    private String email;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String password;
 
     private LocalDateTime createdAt;
 
@@ -35,16 +32,12 @@ public class User {
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-
-        if(this.role == null){
-            this.role = Role.ADMIN;
-        }
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }
