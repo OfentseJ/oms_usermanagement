@@ -47,7 +47,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
-        return null;
+
+        User user = userRepository.findByEmail(loginRequest.getEmail());
+
+
+
+        return LoginResponse.builder()
+                .token(token)
+                .customerId(user.getCustomerId())
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .build();
     }
 
     private RegisterResponse toUserResponse(User user){
