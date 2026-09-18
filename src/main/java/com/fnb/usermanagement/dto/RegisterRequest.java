@@ -3,9 +3,6 @@ package com.fnb.usermanagement.dto;
 import lombok.*;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class RegisterRequest {
     private String firstName;
     private String surname;

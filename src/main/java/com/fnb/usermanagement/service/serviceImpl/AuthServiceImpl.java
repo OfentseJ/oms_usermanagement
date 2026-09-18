@@ -1,5 +1,7 @@
 package com.fnb.usermanagement.service.serviceImpl;
 
+import com.fnb.usermanagement.dto.LoginRequest;
+import com.fnb.usermanagement.dto.LoginResponse;
 import com.fnb.usermanagement.dto.RegisterRequest;
 import com.fnb.usermanagement.dto.RegisterResponse;
 import com.fnb.usermanagement.entity.Role;
@@ -10,6 +12,7 @@ import com.fnb.usermanagement.repository.UserRepository;
 import com.fnb.usermanagement.service.AuthService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +20,10 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+
     private final UserCredentialsRepository userCredentialsRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -32,11 +38,16 @@ public class AuthServiceImpl implements AuthService {
 
         UserCredential userCredential = UserCredential.builder()
                 .user(user)
-                .password(registerRequest.getPassword())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .build();
         userCredentialsRepository.save(userCredential);
 
         return toUserResponse(user);
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest loginRequest) {
+        return null;
     }
 
     private RegisterResponse toUserResponse(User user){
