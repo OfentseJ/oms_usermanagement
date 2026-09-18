@@ -5,6 +5,7 @@ import com.fnb.usermanagement.entity.UserCredential;
 import com.fnb.usermanagement.repository.UserCredentialsRepository;
 import com.fnb.usermanagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +21,7 @@ public class UserDetailsImpl implements UserDetailsService {
     private final UserCredentialsRepository userCredentialsRepository;
 
     @Override
+    @NullMarked
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         User user = userRepository.findByEmail(email);
